@@ -31,21 +31,24 @@ cuVS fetches rapids-cmake, raft and rmm from their `main` branches, which no lon
 ## Dataset Preparation
 
 `preprocessing/prepare_msturing1m.sh` downloads big-ann-benchmarks' MS Turing 1M subset (about 520 MB) into
-`dataset/msturing1m/` and converts it to benchmark inputs:
+`dataset/msturing1m/` and writes:
 
 | file | contents |
 |---|---|
-| `msturing1m_base.fvecs` | 1M base vectors, 100 dimensions |
-| `msturing1m_query.fvecs` | 100K query vectors, 100 dimensions |
-| `msturing1m_groundtruth.ivecs` | top-100 ground-truth ids for each query |
+| `msturing1m_{base,query}.fvecs`, `msturing1m_groundtruth.ivecs` | 1M base, 100K queries, top-100 ids |
+| `symqg32.index` | upstream SymphonyQG index, degree 32, EF 400, 3 iterations, FastScan codebook |
+| `symqg32.graph.bin` | that index's graph (`uint32 n, degree`, then the neighbor ids), read by ParlayANN, CAGRA and Jasper |
 
-Requires Python 3.11 or newer. From the repository root:
+Requires Python 3.11 or newer, a C++17 compiler with OpenMP support, and a CPU with AVX-512 for SymphonyQG. From the repository root:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r preprocessing/requirements.txt
+pip install --no-build-isolation --no-deps preprocessing/SymphonyQG/python
 bash preprocessing/prepare_msturing1m.sh
 ```
 
-Existing download and conversion outputs are reused. Generated data and the virtual environment are git-ignored.
+SymphonyQG's `setup.py` pins `numpy==1.26.4`. For this environment, `--no-deps` skips that dependency pin,
+while `--no-build-isolation` builds against the NumPy and pybind11 versions installed above. The upstream package
+metadata retains the old NumPy requirement, so `pip check` reports this known version conflict.
