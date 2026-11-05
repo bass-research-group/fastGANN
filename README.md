@@ -2,15 +2,16 @@
 
 fastGANN is an accuracy- and hardware-aware graph-based approximate nearest neighbor search (ANNS) system designed for efficient search on GPUs.
 
-🚧 This project is under active development. The current branch includes ParlayANN, CAGRA, and Jasper baselines, benchmarking scripts, and dataset preparation tools.
+🚧 This project is under active development. The current branch includes ParlayANN, SymphonyQG (our CPU port with multithreading support), CAGRA, and Jasper baselines, benchmarking scripts, and dataset preparation tools.
 
 ## Baselines
 
-Upstream baselines as pinned git submodules, each with a bench program that runs in the paper's configurations.
+Baselines include pinned upstream submodules and our parallel CPU port of SymphonyQG, with benchmark programs for the paper's configurations.
 
-| baseline | submodule | pinned commit | bench |
+| baseline | source | pinned commit | bench |
 |---|---|---|---|
 | ParlayANN (CPU) | `benchmark/parlayann/ParlayANN` (cmuparlay/ParlayANN) | a48c6a3 | `benchmark/parlayann/bench_parlayann.cc`: ParlayANN's `qsearchAll` on a fixed-degree graph |
+| SymphonyQG parallel (CPU) | `benchmark/symphonyqg-parallel` (local port) | — | `benchmark/symphonyqg-parallel/symqg_parallel.cpp`: L2 FastScan codebook search with OpenMP query parallelism |
 | CAGRA (GPU) | `benchmark/cagra/cuvs` (rapidsai/cuvs) | 0c3d007 (26.08 dev, 2026-06-02) | `benchmark/cagra/bench_cagra.cu`: cuVS CAGRA on an external graph |
 | Jasper (GPU) | `benchmark/jasper/jasper` (saltsystemslab/jasper) | a0173f4 | Jasper's own `run_query` |
 
@@ -19,9 +20,10 @@ Upstream baselines as pinned git submodules, each with a bench program that runs
 ```bash
 git submodule update --init --recursive
 cd benchmark/
-bash parlayann/build.sh          # g++-12, ParlayANN's flags
-bash jasper/build_jasper.sh      # CUDA 13.1, Jasper's CMake
-bash cagra/build_cuvs.sh 89      # CUDA 13.1, conda env "cuvs"
+bash parlayann/build.sh             # g++-12, ParlayANN's flags
+bash symphonyqg-parallel/build.sh   # g++-12, OpenMP, AVX-512
+bash jasper/build_jasper.sh         # CUDA 13.1, Jasper's CMake
+bash cagra/build_cuvs.sh 89         # CUDA 13.1, conda env "cuvs"
 bash cagra/build_bench.sh 89
 ```
 
