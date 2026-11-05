@@ -40,6 +40,8 @@ cuVS fetches rapids-cmake, raft and rmm from their `main` branches, which no lon
 | `msturing1m_{base,query}.fvecs`, `msturing1m_groundtruth.ivecs` | 1M base, 100K queries, top-100 ids |
 | `symqg32.index` | upstream SymphonyQG index, degree 32, EF 400, 3 iterations, FastScan codebook |
 | `symqg32.graph.bin` | that index's graph (`uint32 n, degree`, then the neighbor ids), read by ParlayANN, CAGRA and Jasper |
+| `symqg32.jasper` | the same graph and entry point in Jasper's native format |
+| `query100K.fbin`, `msturing-gt-1M` | downloaded query and ground-truth binaries, used directly by Jasper |
 
 Requires Python 3.11 or newer, a C++17 compiler with OpenMP support, and a CPU with AVX-512 for SymphonyQG. From the repository root:
 

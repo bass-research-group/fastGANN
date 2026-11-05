@@ -1,7 +1,7 @@
 #!/bin/bash
 # Download big-ann-benchmarks' MS Turing 1M subset (the first 1M vectors of base1b.fbin, query100K.fbin,
 # msturing-gt-1M) into dataset/msturing1m/, convert it to the fvecs / ivecs the benchmarks read, build the upstream
-# SymphonyQG index (FastScan codebook) on it and extract that index's graph. Each step skips outputs that already exist.
+# SymphonyQG index (FastScan codebook) on it and export its graph for the baselines. Each step skips existing outputs.
 # usage: prepare_msturing1m.sh   env: PYTHON (python3, with preprocessing/requirements.txt and the symphonyqg bindings)
 set -euo pipefail
 P=$(cd "$(dirname "$0")" && pwd)
@@ -38,3 +38,7 @@ fi
 # [4] the index's graph, read by ParlayANN, CAGRA and Jasper
 [[ -s $O/symqg32.graph.bin ]] || "$PY" "$P/index_to_graph.py" "$O/msturing1m_base.fvecs" "$O/symqg32.index" \
   "$O/symqg32.graph.bin" 32
+
+# [5] Jasper's native graph; queries and ground truth use the downloaded binary files directly
+[[ -s $O/symqg32.jasper ]] || "$PY" "$P/graph_to_jasper.py" "$O/msturing1m_base.fvecs" \
+  "$O/symqg32.graph.bin" "$O/symqg32.index" "$O/symqg32.jasper"
