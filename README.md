@@ -1,6 +1,6 @@
 # fastGANN
 
-fastGANN is an accuracy- and hardware-aware graph-based approximate nearest neighbor search (ANNS) system designed for efficient search on GPUs.
+fastGANN is an accuracy- and hardware-aware graph-based approximate nearest neighbor search (ANNS) system designed for efficient search on GPUs. The project builds on our [prior work](https://openreview.net/forum?id=FiMBPm5JxL) published at the VecDB 2026 workshop.
 
 🚧 This project is under active development. The current branch includes ParlayANN, SymphonyQG (our CPU port with multithreading support), CAGRA, and Jasper baselines, benchmarking scripts, and dataset preparation tools.
 
