@@ -19,13 +19,11 @@ Baselines include pinned upstream submodules and our parallel CPU port of Sympho
 
 ```bash
 git submodule update --init --recursive
-cd benchmark/
-bash parlayann/build.sh             # g++-12, ParlayANN's flags
-bash symphonyqg-parallel/build.sh   # g++-12, OpenMP, AVX-512
-bash jasper/build_jasper.sh         # CUDA 13.1, Jasper's CMake
-bash cagra/build_cuvs.sh 89         # CUDA 13.1, conda env "cuvs"
-bash cagra/build_bench.sh 89
+bash benchmark/build_all.sh
 ```
+
+Defaults: `g++-12`, CUDA 13.1, and the `cuvs` Conda environment. Override with `CXX`, `CUDA_HOME`, or `CUVS_ENV`.
+An optional argument selects CAGRA's CUDA architecture, e.g. `bash benchmark/build_all.sh 90` (default 89).
 
 cuVS fetches rapids-cmake, raft and rmm from their `main` branches, which no longer build with 0c3d007.
 `build_cuvs.sh` pins them to the commits of the paper's build: rapids-cmake 1e88d0d, raft 0903417, rmm 4d354f6.
@@ -48,7 +46,7 @@ Requires Python 3.11 or newer, a C++17 compiler with OpenMP support, and a CPU w
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r preprocessing/requirements.txt
+pip install -r preprocessing/requirements.txt -r benchmark/requirements.txt
 pip install --no-build-isolation --no-deps preprocessing/SymphonyQG/python
 bash preprocessing/prepare_msturing1m.sh
 ```
@@ -56,3 +54,17 @@ bash preprocessing/prepare_msturing1m.sh
 SymphonyQG's `setup.py` pins `numpy==1.26.4`. For this environment, `--no-deps` skips that dependency pin,
 while `--no-build-isolation` builds against the NumPy and pybind11 versions installed above. The upstream package
 metadata retains the old NumPy requirement, so `pip check` reports this known version conflict.
+
+## Figure 1 (MS Turing 1M)
+
+After building the baselines and preparing the dataset:
+
+```bash
+bash benchmark/run.sh
+bash benchmark/plotting.sh
+```
+
+`run.sh` runs all four methods at one fixed beam each; `plotting.sh` collects the logs and plots median QPS over three trials.
+Outputs `fig01.pdf`, `fig01.png`, and `plot_data.csv` under `result/fig01_msturing1m/`.
+
+Optional settings: `TRIALS`, `THREADS` (default 16), `CUDA_VISIBLE_DEVICES` (default 0), and `RESULT_DIR`.
