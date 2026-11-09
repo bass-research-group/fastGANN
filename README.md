@@ -4,6 +4,10 @@ fastGANN is an accuracy- and hardware-aware graph-based approximate nearest neig
 
 🚧 This project is under active development. The current branch includes ParlayANN, SymphonyQG (our CPU port with multithreading support), CAGRA, and Jasper baselines, benchmarking scripts, and dataset preparation tools.
 
+![Recall@100 vs. QPS of CAGRA, PathWeaver, GPU SymphonyQG, and FastGANN on six datasets](docs/figures/workshop_fig8.png)
+
+*Figure 8 of the VecDB 2026 workshop paper: Recall@100 vs. QPS of CAGRA, PathWeaver, GPU SymphonyQG (our GPU port of SymphonyQG), and fastGANN on SIFT, Deep1M, Deep10M, GIST, OpenAI, and MSTuring. fastGANN is able to achieve consistent speedup over existing baselines.*
+
 ## Baselines
 
 Baselines include pinned upstream submodules and our parallel CPU port of SymphonyQG, with benchmark programs for the paper's configurations.
@@ -68,3 +72,18 @@ bash benchmark/plotting.sh
 Outputs `fig01.pdf`, `fig01.png`, and `plot_data.csv` under `result/fig01_msturing1m/`.
 
 Optional settings: `TRIALS`, `THREADS` (default 16), `CUDA_VISIBLE_DEVICES` (default 0), and `RESULT_DIR`.
+
+## Publications
+
+Please cite the following paper if you use this code:
+
+```
+@inproceedings{
+sun2026fastgann,
+title={Fast{GANN}: Marrying Quantization with Pruning for {GPU} {ANNS}},
+author={ZeAi Sun and jinxu Liu},
+booktitle={The 2nd Workshop on Vector Databases},
+year={2026},
+url={https://openreview.net/forum?id=FiMBPm5JxL}
+}
+```
