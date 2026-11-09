@@ -1,0 +1,15 @@
+[submodule "benchmark/parlayann/ParlayANN"]
+	path = benchmark/parlayann/ParlayANN
+	url = https://github.com/cmuparlay/ParlayANN.git
+[submodule "benchmark/jasper/jasper"]
+	path = benchmark/jasper/jasper
+	url = https://github.com/saltsystemslab/jasper.git
+[submodule "benchmark/cagra/cuvs"]
+	path = benchmark/cagra/cuvs
+	url = https://github.com/rapidsai/cuvs.git
+[submodule "preprocessing/big-ann-benchmarks"]
+	path = preprocessing/big-ann-benchmarks
+	url = https://github.com/harsha-simhadri/big-ann-benchmarks.git
+[submodule "preprocessing/SymphonyQG"]
+	path = preprocessing/SymphonyQG
+	url = https://github.com/gouyt13/SymphonyQG.git
